@@ -75,6 +75,7 @@ public class DynamicListView extends ListView {
     public ArrayList<String> mCheeseList;
 
     private int mLastEventY = -1;
+    private int mLastEventX = -1;
 
     private int mDownY = -1;
     private int mDownX = -1;
@@ -263,6 +264,11 @@ public class DynamicListView extends ListView {
             mHoverCell.draw(canvas);
         }
     }
+    
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent ev) {
+		return true;
+	}
 
     @Override
     public boolean onTouchEvent (MotionEvent event) {
@@ -272,6 +278,13 @@ public class DynamicListView extends ListView {
                 mDownX = (int)event.getX();
                 mDownY = (int)event.getY();
                 mActivePointerId = event.getPointerId(0);
+                
+                int position = pointToPosition(mDownX, mDownY);
+                int itemNum = position - getFirstVisiblePosition();
+
+                View selectedView = getChildAt(itemNum);
+                YoutubeLayout view = (YoutubeLayout) selectedView.findViewById(R.id.youtubeLayout);
+                view.processEvent(event);
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (mActivePointerId == INVALID_POINTER_ID) {
@@ -281,7 +294,20 @@ public class DynamicListView extends ListView {
                 int pointerIndex = event.findPointerIndex(mActivePointerId);
 
                 mLastEventY = (int) event.getY(pointerIndex);
+                mLastEventX = (int) event.getX(pointerIndex);
                 int deltaY = mLastEventY - mDownY;
+                int deltaX = mLastEventX - mDownX;
+                
+                if((deltaX>10 || deltaX<-10) && !mCellIsMobile){
+                	Log.e(TAG, "deltaX>10");
+                	int position2 = pointToPosition(mDownX, mDownY);
+                    int itemNum2 = position2 - getFirstVisiblePosition();
+
+                    View selectedView2 = getChildAt(itemNum2);
+                    YoutubeLayout view2 = (YoutubeLayout) selectedView2.findViewById(R.id.youtubeLayout);
+                    view2.processEvent(event);
+                }
+                
 
                 if (mCellIsMobile) {
                     mHoverCellCurrentBounds.offsetTo(mHoverCellOriginalBounds.left,

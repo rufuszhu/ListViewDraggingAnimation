@@ -127,14 +127,14 @@ public class YoutubeLayout extends ViewGroup {
 
 	private class DragHelperCallback extends ViewDragHelper.Callback {
 
-		@Override
-		public void onViewDragStateChanged(int state) {
-			if (state == mDraggingState) { // no change
-				return;
-			}
-			Log.e(TAG, "onViewDragStateChanged");
-			mDraggingState = state;
-		}
+//		@Override
+//		public void onViewDragStateChanged(int state) {
+//			if (state == mDraggingState) { // no change
+//				return;
+//			}
+//			Log.e(TAG, "onViewDragStateChanged");
+//			mDraggingState = state;
+//		}
 
 		@Override
 		public boolean tryCaptureView(View child, int pointerId) {
@@ -151,6 +151,7 @@ public class YoutubeLayout extends ViewGroup {
 
 		@Override
 		public void onViewReleased(View releasedChild, float xvel, float yvel) {
+			Log.e(TAG, "onViewReleased");
 			if (xvel > 0 || (xvel == 0 && (float) mLeft / mDescView.getWidth() > 0.5f)) {
 				mDragHelper.settleCapturedViewAt(mDescView.getMeasuredWidth(), releasedChild.getTop());
 			} else {
@@ -184,122 +185,127 @@ public class YoutubeLayout extends ViewGroup {
 		}
 	}
 
-	@Override
-	public boolean onInterceptTouchEvent(MotionEvent ev) {
+//	@Override
+//	public boolean onInterceptTouchEvent(MotionEvent ev) {
+//
+////		final float x = ev.getX();
+////		final float y = ev.getY();
+////
+////		boolean result = false;
+////		final int action = MotionEventCompat.getActionMasked(ev);
+////		// Always handle the case of the touch gesture being complete.
+////		if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
+////			// Release the scroll.
+////			mIsScrolling = false;
+////			return false; // Do not intercept touch event, let the child handle it
+////		}
+////
+////		switch (action) {
+////		case MotionEvent.ACTION_DOWN: {
+////			Log.e(TAG, "onInterceptTouchEvent ACTION_DOWN");
+////			mInitialMotionX = x;
+////			mInitialMotionY = y;
+////			break;
+////		}
+////
+////		case MotionEvent.ACTION_MOVE: {
+////			Log.e(TAG, "onInterceptTouchEvent ACTION_MOVE");
+////			if (mIsScrolling) {
+////				// We're currently scrolling, so yes, intercept the
+////				// touch event!
+////				return true;
+////			}
+////
+////			// If the user has dragged her finger horizontally more than
+////			// the touch slop, start the scroll
+////
+////			// left as an exercise for the reader
+////			final int xDiff = (int) x - (int) mInitialMotionX;
+////
+////			// Touch slop should be calculated using ViewConfiguration
+////			// constants.
+////			if (xDiff > mDragHelper.getTouchSlop()) {
+////				// Start scrolling!
+////				mIsScrolling = true;
+////				return true;
+////			}
+////			break;
+////		}
+////
+////		}
+//
+//		// In general, we don't want to intercept touch events. They should be
+//		// handled by the child view.
+//		return false;
+//
+//		// if (mDragHelper.shouldInterceptTouchEvent(event)) {
+//		// Log.e(TAG, "onInterceptTouchEvent true");
+//		// return true;
+//		// } else {
+//		// Log.e(TAG, "onInterceptTouchEvent false");
+//		// return false;
+//		// }
+//	}
 
-		final float x = ev.getX();
-		final float y = ev.getY();
-
-		boolean result = false;
-		final int action = MotionEventCompat.getActionMasked(ev);
-		// Always handle the case of the touch gesture being complete.
-		if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
-			// Release the scroll.
-			mIsScrolling = false;
-			return false; // Do not intercept touch event, let the child handle it
-		}
-
-		switch (action) {
-		case MotionEvent.ACTION_DOWN: {
-			Log.e(TAG, "onInterceptTouchEvent ACTION_DOWN");
-			mInitialMotionX = x;
-			mInitialMotionY = y;
-			break;
-		}
-
-		case MotionEvent.ACTION_MOVE: {
-			Log.e(TAG, "onInterceptTouchEvent ACTION_MOVE");
-			if (mIsScrolling) {
-				// We're currently scrolling, so yes, intercept the
-				// touch event!
-				return true;
-			}
-
-			// If the user has dragged her finger horizontally more than
-			// the touch slop, start the scroll
-
-			// left as an exercise for the reader
-			final int xDiff = (int) x - (int) mInitialMotionX;
-
-			// Touch slop should be calculated using ViewConfiguration
-			// constants.
-			if (xDiff > mDragHelper.getTouchSlop()) {
-				// Start scrolling!
-				mIsScrolling = true;
-				return true;
-			}
-			break;
-		}
-
-		}
-
-		// In general, we don't want to intercept touch events. They should be
-		// handled by the child view.
-		return false;
-
-		// if (mDragHelper.shouldInterceptTouchEvent(event)) {
-		// Log.e(TAG, "onInterceptTouchEvent true");
-		// return true;
-		// } else {
-		// Log.e(TAG, "onInterceptTouchEvent false");
-		// return false;
-		// }
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		// this.mDetector.onTouchEvent(event);
-		// if (event.getAction() == MotionEvent.ACTION_UP) {
-		// isLongPressing = false;
-		// isOnSroll = false;
-		// }
-		//
-		// if (isLongPressing)
-		// return super.onTouchEvent(event);
-		// if (isOnSroll) {
-		// if (mDragHelper != null)
-		// Log.e(TAG, "mDragHelper is not null");
-		//
-		// if (event != null)
-		// Log.e(TAG, "event is not null");
-		//
-		// mDragHelper.processTouchEvent(event);
-		// return true;
-		// }
-		//
-		// return true;
-		final float x = event.getX();
-		final float y = event.getY();
-
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN: {
-			Log.e(TAG, "onTouchEvent ACTION_DOWN");
-			mInitialMotionX = x;
-			mInitialMotionY = y;
-			break;
-		}
-		case MotionEvent.ACTION_MOVE: {
-			Log.e(TAG, "onTouchEvent ACTION_MOVE");
-			final float adx = Math.abs(x - mInitialMotionX);
-			final float ady = Math.abs(y - mInitialMotionY);
-
-			if (adx > mDragHelper.getTouchSlop()) {
-				mDragHelper.processTouchEvent(event);
-				return true;
-			}
-		}
-		}
-		
-		return super.onTouchEvent(event);
-
-		// if (result && isMoving()) {
-		// Log.e(TAG, "onTouchEvent returning true");
-		// mDragHelper.processTouchEvent(event);
-		// return true;
-		// } else {
-		// Log.e(TAG, "onTouchEvent returning false");
-		// return super.onTouchEvent(event);
-		// }
+//	@Override
+//	public boolean onTouchEvent(MotionEvent event) {
+//		// this.mDetector.onTouchEvent(event);
+//		// if (event.getAction() == MotionEvent.ACTION_UP) {
+//		// isLongPressing = false;
+//		// isOnSroll = false;
+//		// }
+//		//
+//		// if (isLongPressing)
+//		// return super.onTouchEvent(event);
+//		// if (isOnSroll) {
+//		// if (mDragHelper != null)
+//		// Log.e(TAG, "mDragHelper is not null");
+//		//
+//		// if (event != null)
+//		// Log.e(TAG, "event is not null");
+//		//
+//		// mDragHelper.processTouchEvent(event);
+//		// return true;
+//		// }
+//		//
+//		// return true;
+//		
+////		final float x = event.getX();
+////		final float y = event.getY();
+////
+////		switch (event.getAction()) {
+////		case MotionEvent.ACTION_DOWN: {
+////			Log.e(TAG, "onTouchEvent ACTION_DOWN");
+////			mInitialMotionX = x;
+////			mInitialMotionY = y;
+////			break;
+////		}
+////		case MotionEvent.ACTION_MOVE: {
+////			Log.e(TAG, "onTouchEvent ACTION_MOVE");
+////			final float adx = Math.abs(x - mInitialMotionX);
+////			final float ady = Math.abs(y - mInitialMotionY);
+////
+////			if (adx > mDragHelper.getTouchSlop()) {
+////				mDragHelper.processTouchEvent(event);
+////				return true;
+////			}
+////		}
+////		}
+////		
+////		return super.onTouchEvent(event);
+//
+//		// if (result && isMoving()) {
+//		 //Log.e(TAG, "onTouchEvent returning true");
+//		 mDragHelper.processTouchEvent(event);
+//		 return true;
+//		// } else {
+//		// Log.e(TAG, "onTouchEvent returning false");
+//		// return super.onTouchEvent(event);
+//		// }
+//	}
+	
+	public void processEvent(MotionEvent event){
+		mDragHelper.processTouchEvent(event);
 	}
 
 	public boolean isMoving() {
